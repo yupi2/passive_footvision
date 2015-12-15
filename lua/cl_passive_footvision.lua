@@ -20,12 +20,19 @@ hook.Add("TTTSettingsTabs", "Footvision thing", function(dtabs)
 
 	local dgui = vgui.Create("DForm", dsettings)
 	dgui:SetName("Draw Foot-vision when bought.")
-	dgui:TTTCustomUI_FormatForm()
+
+	if tttCustomSettings then
+		dgui:TTTCustomUI_FormatForm()
+	end
+
 	dgui:CheckBox("Enable Drawing", "ttt_enable_footvision")
 	dsettings:AddItem(dgui)
-	for k, v in pairs(dgui.Items) do
-		for i, j in pairs(v:GetChildren()) do
-			j.Label:TTTCustomUI_FormatLabel()
+
+	if tttCustomSettings then
+		for k, v in pairs(dgui.Items) do
+			for i, j in pairs(v:GetChildren()) do
+				j.Label:TTTCustomUI_FormatLabel()
+			end
 		end
 	end
 end)
