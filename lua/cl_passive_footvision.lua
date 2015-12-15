@@ -17,7 +17,6 @@ end
 
 hook.Add("TTTSettingsTabs", "Footvision thing", function(dtabs)
 	local dsettings = dtabs.Items[2].Panel
-
 	local dgui = vgui.Create("DForm", dsettings)
 	dgui:SetName("Draw Foot-vision when bought.")
 
