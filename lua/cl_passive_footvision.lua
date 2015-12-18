@@ -6,11 +6,11 @@ local footprints_interval = 1.5
 local ttt_enable_footvision = CreateClientConVar("ttt_enable_footvision", "1", true, true)
 
 local toggleDisguise = concommand.GetTable()["ttt_toggle_disguise"]
-concommand.GetTable()["ttt_toggle_disguise"] = function(ply)
-	if LocalPlayer():IsDetective() then
+concommand.GetTable()["ttt_toggle_disguise"] = function(plr)
+	if plr:IsDetective() then
 		RunConsoleCommand("ttt_enable_footvision", ttt_enable_footvision:GetBool() and "0" or "1")
 	else
-		toggleDisguise(ply)
+		toggleDisguise(plr)
 	end
 end
 
@@ -50,7 +50,7 @@ local footprintTexturedQuad = {
 	h =  20	
 }
 
-local blackAndWhiteColorModify = {
+local colour_modification = {
 	["$pp_colour_addr"]       = 0,
 	["$pp_colour_addr"]       = 0,
 	["$pp_colour_addb"]       = 0,
@@ -62,25 +62,30 @@ local blackAndWhiteColorModify = {
 	["$pp_colour_mulb"]       = 0,
 }
 
-hook.Add("PostDrawOpaqueRenderables", "Render Footvision footprints", function()
-	if not LocalPlayer():IsActive() then return end
+local drawFootprint(footprint)
+	cam.Start3D2D(footprint.pos + upvec, Angle(0, (footprint.ang - 90), 0), 1)
+		render.SuppressEngineLighting(true)
+		render.SetColorModulation(1, 0, 0)
+		footprintTexturedQuad.color = Color(255, 0, 0, k * (250 / footprints_max))
+		draw.TexturedQuad(footprintTexturedQuad)
+		render.SuppressEngineLighting(false)
+		render.SetColorModulation(1, 1, 1)
+	cam.End3D2D()
+end
 
-	if LocalPlayer():HasEquipmentItem(EQUIP_FOOTVISION) and ttt_enable_footvision:GetBool() then	
+hook.Add("PostDrawOpaqueRenderables", "Render Footvision footprints", function()
+	local lp = LocalPlayer()
+	if not lp:IsActive() then return end
+
+	if lp:HasEquipmentItem(EQUIP_FOOTVISION) and ttt_enable_footvision:GetBool() then	
 		local upvec = Vector(0, 0, 2)
 
 		-- Set the screen to black and white.
-		DrawColorModify(blackAndWhiteColorModify)
+		DrawColorModify(colour_modification)
 			
 		for k, frame in ipairs(footprints) do
 			for i, footprint in ipairs(frame) do
-				cam.Start3D2D(footprint.pos + upvec, Angle(0, (footprint.ang - 90), 0), 1)
-					render.SuppressEngineLighting(true)
-					render.SetColorModulation(1, 0, 0)
-					footprintTexturedQuad.color = Color(255, 0, 0, k * (250 / footprints_max))
-					draw.TexturedQuad(footprintTexturedQuad)
-					render.SuppressEngineLighting(false)
-					render.SetColorModulation(1, 1, 1)
-				cam.End3D2D()
+				drawFootprint(footprint)
 			end
 		end
 	end
