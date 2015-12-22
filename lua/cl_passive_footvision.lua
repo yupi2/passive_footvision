@@ -62,7 +62,7 @@ local colour_modification = {
 	["$pp_colour_mulb"]       = 0,
 }
 
-local drawFootprint(footprint)
+local function drawFootprint(footprint)
 	cam.Start3D2D(footprint.pos + upvec, Angle(0, (footprint.ang - 90), 0), 1)
 		render.SuppressEngineLighting(true)
 		render.SetColorModulation(1, 0, 0)
