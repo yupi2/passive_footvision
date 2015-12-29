@@ -14,7 +14,6 @@ concommand.GetTable()["ttt_toggle_disguise"] = function(plr)
 	end
 end
 
-
 hook.Add("TTTSettingsTabs", "Footvision thing", function(dtabs)
 	local dsettings = dtabs.Items[2].Panel
 	local dgui = vgui.Create("DForm", dsettings)
@@ -62,6 +61,7 @@ local colour_modification = {
 	["$pp_colour_mulb"]       = 0,
 }
 
+local upvec = Vector(0, 0, 2)
 local function drawFootprint(footprint)
 	cam.Start3D2D(footprint.pos + upvec, Angle(0, (footprint.ang - 90), 0), 1)
 		render.SuppressEngineLighting(true)
@@ -78,8 +78,6 @@ hook.Add("PostDrawOpaqueRenderables", "Render Footvision footprints", function()
 	if not lp:IsActive() then return end
 
 	if lp:HasEquipmentItem(EQUIP_FOOTVISION) and ttt_enable_footvision:GetBool() then	
-		local upvec = Vector(0, 0, 2)
-
 		-- Set the screen to black and white.
 		DrawColorModify(colour_modification)
 			
