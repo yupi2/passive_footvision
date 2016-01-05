@@ -62,7 +62,7 @@ local colour_modification = {
 }
 
 local upvec = Vector(0, 0, 2)
-local function drawFootprint(footprint)
+local function drawFootprint(footprint, k)
 	cam.Start3D2D(footprint.pos + upvec, Angle(0, (footprint.ang - 90), 0), 1)
 		render.SuppressEngineLighting(true)
 		render.SetColorModulation(1, 0, 0)
@@ -83,7 +83,7 @@ hook.Add("PostDrawOpaqueRenderables", "Render Footvision footprints", function()
 			
 		for k, frame in ipairs(footprints) do
 			for i, footprint in ipairs(frame) do
-				drawFootprint(footprint)
+				drawFootprint(footprint, k)
 			end
 		end
 	end
