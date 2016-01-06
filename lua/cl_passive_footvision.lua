@@ -5,12 +5,12 @@ local footprints_interval = 1.5
 
 local ttt_enable_footvision = CreateClientConVar("ttt_enable_footvision", "1", true, true)
 
-local toggleDisguise = concommand.GetTable()["ttt_toggle_disguise"]
+oldToggleDisguise = oldToggleDisguise or concommand.GetTable()["ttt_toggle_disguise"]
 concommand.GetTable()["ttt_toggle_disguise"] = function(plr)
 	if plr:IsDetective() then
 		RunConsoleCommand("ttt_enable_footvision", ttt_enable_footvision:GetBool() and "0" or "1")
 	else
-		toggleDisguise(plr)
+		oldToggleDisguise(plr)
 	end
 end
 
